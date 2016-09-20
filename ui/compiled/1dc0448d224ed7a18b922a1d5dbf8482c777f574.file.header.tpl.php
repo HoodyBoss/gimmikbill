@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2016-09-12 13:58:38
+<?php /* Smarty version Smarty-3.1.13, created on 2016-09-15 12:16:01
          compiled from "ui/theme/default/sections/header.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:212496602457d6521e8fc076-17122141%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1dc0448d224ed7a18b922a1d5dbf8482c777f574' => 
     array (
       0 => 'ui/theme/default/sections/header.tpl',
-      1 => 1473662045,
+      1 => 1473916528,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.13',
+  'unifunc' => 'content_57d6521ea702c4_42699762',
   'variables' => 
   array (
     '_title' => 0,
@@ -29,8 +31,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'notify' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_57d6521ea702c4_42699762',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_57d6521ea702c4_42699762')) {function content_57d6521ea702c4_42699762($_smarty_tpl) {?><!DOCTYPE html>
 <html>
@@ -212,13 +212,15 @@ dashboard">
 </span>
 						</a>
 					</li>
-					<li <?php if ($_smarty_tpl->tpl_vars['_system_menu']->value=='message'){?>class="open"<?php }?>>
-						<a href="#">
+					<li <?php if ($_smarty_tpl->tpl_vars['_system_menu']->value=='frontend'){?>class="open"<?php }?>>
+						<a href="<?php echo $_smarty_tpl->tpl_vars['_url']->value;?>
+frontend/frontend">
 							<i class="ion ion-email"></i>
-							<span class="text"><?php echo $_smarty_tpl->tpl_vars['_L']->value['Private_Message'];?>
+							<span class="text"><?php echo $_smarty_tpl->tpl_vars['_L']->value['Front_end_menu'];?>
 </span>
-							<i class="arrow ion-chevron-left"></i>
+							<!--<i class="arrow ion-chevron-left"></i> -->
 						</a>
+						<!--
 						<ul class="inner-drop list-unstyled">
 							<li <?php if ($_smarty_tpl->tpl_vars['_system_menu']->value=='message'){?>class="active"<?php }?>><a href="<?php echo $_smarty_tpl->tpl_vars['_url']->value;?>
 message/inbox"><?php echo $_smarty_tpl->tpl_vars['_L']->value['Inbox'];?>
@@ -230,6 +232,7 @@ message/outbox"><?php echo $_smarty_tpl->tpl_vars['_L']->value['Outbox'];?>
 message/compose"><?php echo $_smarty_tpl->tpl_vars['_L']->value['Compose'];?>
 </a></li>
 						</ul>
+						-->
 					</li>
 				<?php if ($_smarty_tpl->tpl_vars['_admin']->value['user_type']=='Admin'||$_smarty_tpl->tpl_vars['_admin']->value['user_type']=='Sales'){?>
 					<li <?php if ($_smarty_tpl->tpl_vars['_system_menu']->value=='customers'){?>class="open"<?php }?>>

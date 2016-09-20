@@ -135,17 +135,19 @@
 							<span class="text">{$_L['Dashboard']}</span>
 						</a>
 					</li>
-					<li {if $_system_menu eq 'message'}class="open"{/if}>
-						<a href="#">
+					<li {if $_system_menu eq 'frontend'}class="open"{/if}>
+						<a href="{$_url}frontend/frontend">
 							<i class="ion ion-email"></i>
-							<span class="text">{$_L['Private_Message']}</span>
-							<i class="arrow ion-chevron-left"></i>
+							<span class="text">{$_L['Front_end_menu']}</span>
+							<!--<i class="arrow ion-chevron-left"></i> -->
 						</a>
+						<!--
 						<ul class="inner-drop list-unstyled">
 							<li {if $_system_menu eq 'message'}class="active"{/if}><a href="{$_url}message/inbox">{$_L['Inbox']}</a></li>
 							<li {if $_system_menu eq 'message'}class="active"{/if}><a href="{$_url}message/outbox">{$_L['Outbox']}</a></li>
 							<li {if $_system_menu eq 'message'}class="active"{/if}><a href="{$_url}message/compose">{$_L['Compose']}</a></li>
 						</ul>
+						-->
 					</li>
 				{if $_admin['user_type'] eq 'Admin' || $_admin['user_type'] eq 'Sales'}
 					<li {if $_system_menu eq 'customers'}class="open"{/if}>

@@ -224,3 +224,10 @@ $_L['Name_Lang'] = 'Nama Bahasa';
 $_L['Folder_Lang'] = 'Nama Folder';
 $_L['Translator'] = 'Translator';
 $_L['Lang_already_exist'] = 'Nama bahasa sudah ada';
+
+$_L['Front_end_title'] = 'Welcome';
+$_L['New_Frontend'] = 'New Frontend';
+$_L['Title_Msg'] = 'Title Message';
+$_L['Search_by_Title'] = 'Search by Title';
+
+$_L['Front_end_menu'] = 'Front End Screen';

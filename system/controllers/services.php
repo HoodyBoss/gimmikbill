@@ -449,7 +449,23 @@ switch ($action) {
             r2(U . 'services/pppoe-edit/'.$id, 'e', $msg);
         }
         break;
-		
+	//Modified on 15/09/2016 for add service front end
+	case 'frontend':
+		$ui->assign('xfooter', '<script type="text/javascript" src="ui/lib/c/front-end.js"></script>');
+		$name = _post('name');
+		if ($name != ''){
+			$paginator = Paginator::bootstrap('tbl_frontend','title_msg','%'.$name.'%','status','Y');
+			$d = ORM::for_table('tbl_frontend')->where('tbl_frontend.status','Y')->where_like('tbl_frontend.title_msg','%'.$name.'%')->offset($paginator['startpoint'])->limit($paginator['limit'])->find_many();
+		}else{
+			$paginator = Paginator::bootstrap('tbl_frontend','status','Y');
+			$d = ORM::for_table('tbl_frontend')->where('tbl_frontend.status','Y')->offset($paginator['startpoint'])->limit($paginator['limit'])->find_many();
+		}
+	
+		$ui->assign('d',$d);
+		$ui->assign('paginator',$paginator);
+        $ui->display('front-end.tpl');
+        break;
+	//End 
     default:
         echo 'action not defined';
 }
