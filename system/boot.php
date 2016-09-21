@@ -46,6 +46,76 @@ function _get($param,$defvalue = ''){
     }
 }
 
+//Upload file
+function _file($param,$defvalue = '') {
+    try {
+        _log('File upload :: '.$_FILES[$param]['tmp_name'] , 'Admin' );
+        // Undefined | Multiple Files | $_FILES Corruption Attack
+        // If this request falls under any of them, treat it invalid.
+        if (
+            !isset($_FILES[$param]['error']) ||
+            is_array($_FILES[$param]['error'])
+        ) {
+            throw new RuntimeException('Invalid parameters.');
+        }
+
+        // Check $_FILES['upfile']['error'] value.
+        switch ($_FILES[$param]['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                throw new RuntimeException('No file sent.');
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                throw new RuntimeException('Exceeded filesize limit.');
+            default:
+                throw new RuntimeException('Unknown errors.');
+        }
+
+        // You should also check filesize here. 
+        if ($_FILES[$param]['size'] > 1000000) {
+            throw new RuntimeException('Exceeded filesize limit.');
+        }
+
+        // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
+        // Check MIME Type by yourself.
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        if (false === $ext = array_search(
+            $finfo->file($_FILES[$param]['tmp_name']),
+            array(
+                'jpg' => 'image/jpeg',
+                'png' => 'image/png',
+                'gif' => 'image/gif',
+            ),
+            true
+        )) {
+            throw new RuntimeException('Invalid file format.');
+        }
+
+        // You should name it uniquely.
+        // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
+        // On this example, obtain safe unique name from its binary data.
+        $filename = rand(100000000,999999999);
+        //$file_ext=strtolower(end(explode('.',$_FILES[$param]['name'])));
+        _log('File extension : '.is_dir('system/uploads/files/') , 'Admin' );
+        if (!move_uploaded_file(
+            $_FILES[$param]['tmp_name'],
+            'uploads/'.$filename.'.'.$ext
+            )
+        ) {
+            throw new RuntimeException('Failed to move uploaded file.');
+        }
+
+        return $filename.'.'.$ext ;
+
+    } catch (RuntimeException $e) {
+
+        throw $e;
+
+    }
+
+}
+
 require('system/orm.php');
 
 ORM::configure("mysql:host=$db_host;dbname=$db_name");

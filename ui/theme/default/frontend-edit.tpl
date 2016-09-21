@@ -6,28 +6,28 @@
 					<div class="panel-heading">{$_L['Edit_Frontend']}</div>
 						<div class="panel-body">
 
-						<form class="form-horizontal" method="post" role="form" action="{$_url}frontend/edit-post">
+						<form class="form-horizontal" method="post" role="form" action="{$_url}frontend/editfrontend" enctype="multipart/form-data">
 							<input type="hidden" name="id" value="{$d['id']}">
 							<div class="form-group">
 								<label class="col-md-2 control-label">{$_L['Title_Msg']}</label>
 								<div class="col-md-6">
-									<input type="text" class="form-control" id="title_msg" name="title_msg" value="{$d['title_msg']}" readonly>
+									<input type="text" class="form-control" id="title_msg" name="title_msg" value="{$d['title_msg']}" >
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2 control-label">{$_L['Frontend_Logo_Img']}</label>
 								<div class="col-md-10">
 									<input type="file" class="form-control" id="logo_img" name="logo_img" >
-									{if $d['logo_img'] not eq ''} <img src=""> {/if}
+									{if isset($d['logo_img'])} <img src="uploads/{$d['logo_img']}" width = "250px" height = "250px"> {/if}
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2 control-label">{$_L['Frontend_BG_Img']}</label>
 								<div class="col-md-10">
 									<input type="file" class="form-control" id="bg_img" name="bg_img" >
-									{if $d['bg_img'] not eq ''} <img src=""> {/if}
+									{if isset($d['bg_img'])} <img src="uploads/{$d['bg_img']}" width = "250px" height = "250px"> {/if}
 								</div>
-							</div>
+							</div>  
 							
 							<div class="form-group">
 								<div class="col-lg-offset-2 col-lg-10">

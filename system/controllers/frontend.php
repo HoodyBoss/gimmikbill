@@ -43,6 +43,120 @@ switch ($action) {
 		
         $ui->display('frontend-add.tpl');
         break;
+	case 'addfrontend':
+		
+		try{
+			$title_msg = _post('title_msg');
+			$logo_img = _file('logo_img');
+			$bg_img = _file('bg_img');
+			_log($title_msg ,$admin['username']);
+			$msg = '';
+			if ($title_msg == '' OR $logo_img == '' OR $bg_img == ''){
+				$msg .= $_L['All_field_is_required']. '<br>';
+			}
+		}
+		catch(Exception $e)
+		{
+			$msg = $e->getMessage();
+		}
+
+		if($msg == ''){
+			$d = ORM::for_table('tbl_frontend')->create();
+			$d->title_msg = $title_msg;
+			$d->logo_img = $logo_img;
+			$d->bg_img = $bg_img;
+			$d->cb = $admin['username'];
+			$d->save();
+
+			r2(U . 'frontend/frontend', 's', $_L['Created_Successfully']);
+		}
+		else{
+			r2(U . 'frontend/add', 'e', $msg);
+		}
+
+        break;
+	case 'edit':
+        $id  = $routes['2'];
+		_log( 'Edit id : '.$id ,$admin['username']);
+        $d = ORM::for_table('tbl_frontend')->find_one($id);
+		//_log( 'Edit object : '.$d ,$admin['username']);
+        if($d){
+            $ui->assign('d',$d);
+			
+            $ui->display('frontend-edit.tpl');
+        }else{
+            r2(U . 'frontend/frontend', 'e', $_L['Frontend_Not_Found']);
+        }
+        break;
+
+    case 'editfrontend':
+
+		$id = _post('id');
+		
+		try{
+			$title_msg = _post('title_msg');
+			_log('Check file upload > '.empty($_FILES['logo_img']['tmp_name']),$admin['username']);
+			if (!empty($_FILES['logo_img']['tmp_name']))
+				$logo_img = _file('logo_img');
+			if (!empty($_FILES['bg_img']['tmp_name']))
+				$bg_img = _file('bg_img');
+			
+			$msg = '';
+			if ($title_msg == '' ){
+				$msg .= $_L['Title_msg_field_is_required']. '<br>';
+			}
+		}
+		catch(Exception $e)
+		{
+			$msg = $e->getMessage();
+		}
+
+		$d = ORM::for_table('tbl_frontend')->find_one($id);
+        if($d){
+        }else{
+            $msg .= $_L['Data_Not_Found']. '<br>';
+        }
+
+		if($msg == ''){
+			if (!empty($title_msg)) {
+				$d->title_msg = $title_msg;
+			} /*else {
+				$d->title_msg = $d->title_msg;
+			}*/
+			if (!empty($_FILES['logo_img'])){
+				$d->logo_img = $logo_img;
+			} else {
+				$d->logo_img = $d->logo_img;
+			}
+			if (!empty($_FILES['bg_img'])){
+				$d->bg_img = $bg_img;
+			} else {
+				$d->bg_img = $d->bg_img;
+			}
+			$date = new DateTime();
+			$d->md = $date->getTimestamp();
+			$d->mb = $admin['username'];
+			$d->save();
+
+			r2(U . 'frontend/frontend', 's', $_L['Created_Successfully']);
+		}
+		else{
+			r2(U . 'frontend/edit/'.$id , 'e', $msg);
+		}
+
+        break;
+	case 'delete':
+        $id  = $routes['2'];
+		
+        $d = ORM::for_table('tbl_frontend')->find_one($id);
+        if($d){
+			
+            $d->delete();
+			
+            r2(U . 'frontend/frontend', 's', $_L['Delete_Successfully']);
+        }
+        break;
+
     default:
         $ui->display('404.tpl');
 }

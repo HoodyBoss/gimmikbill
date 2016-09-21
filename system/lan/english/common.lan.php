@@ -237,3 +237,8 @@ $_L['Frontend_Logo_Img'] = 'Logo Images';
 $_L['Frontend_BG_Img'] = 'Background Images';
 
 $_L['Edit_Frontend'] = 'Edit Frontend';
+
+$_L['Status'] = 'Status';
+$_L['Frontend_Not_Found'] = 'Front End Not Found';
+$_L['Title_msg_field_is_required'] = 'Title Message field is required';
+

@@ -6,7 +6,7 @@
 					<div class="panel-heading">{$_L['Add_Frontend']}</div>
 						<div class="panel-body">
 
-                <form class="form-horizontal" method="post" role="form" action="{$_url}frontend/add-frontend" >            
+                <form class="form-horizontal" method="post" role="form" action="{$_url}frontend/addfrontend" enctype="multipart/form-data">            
                     <div class="form-group">
 						<label class="col-md-2 control-label">{$_L['Title_Msg']}</label>
 						<div class="col-md-6">

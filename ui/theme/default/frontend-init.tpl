@@ -28,6 +28,7 @@
 							<thead>
 								<tr>
 									<th>{$_L['Title_Msg']}</th>
+									<th>{$_L['Status']}</th>
 									<th>{$_L['Manage']}</th>
 								</tr>
 							</thead>
@@ -35,6 +36,7 @@
 							{foreach $d as $ds}
 								<tr>
 									<td>{$ds['title_msg']}</td>
+									<td>{$ds['status']}</td>
 									<td>
 										<a href="{$_url}frontend/edit/{$ds['id']}" class="btn btn-warning btn-sm">{$_L['Edit']}</a>
 										<a href="{$_url}frontend/delete/{$ds['id']}" id="{$ds['id']}" class="btn btn-danger btn-sm cdelete">{$_L['Delete']}</a>
