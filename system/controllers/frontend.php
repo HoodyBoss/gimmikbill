@@ -120,19 +120,21 @@ switch ($action) {
 		if($msg == ''){
 			if (!empty($title_msg)) {
 				$d->title_msg = $title_msg;
-			} /*else {
+			} else {
 				$d->title_msg = $d->title_msg;
-			}*/
-			if (!empty($_FILES['logo_img'])){
+			}
+			if (!empty($logo_img)){
 				$d->logo_img = $logo_img;
 			} else {
 				$d->logo_img = $d->logo_img;
 			}
-			if (!empty($_FILES['bg_img'])){
+			if (!empty($bg_img)){
 				$d->bg_img = $bg_img;
 			} else {
 				$d->bg_img = $d->bg_img;
 			}
+			_log('logo img > '.$d->logo_img,$admin['username']);
+			_log('bg img > '.$d->bg_img,$admin['username']);
 			$date = new DateTime();
 			$d->md = $date->getTimestamp();
 			$d->mb = $admin['username'];
