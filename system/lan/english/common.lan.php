@@ -242,3 +242,7 @@ $_L['Status'] = 'Status';
 $_L['Frontend_Not_Found'] = 'Front End Not Found';
 $_L['Title_msg_field_is_required'] = 'Title Message field is required';
 
+$_L['Use'] = 'Use';
+$_L['Upload_Successfully'] = 'Upload Successfully';
+$_L['Upload_Failed'] = 'Upload Failed';
+

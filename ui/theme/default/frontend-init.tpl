@@ -40,6 +40,7 @@
 									<td>
 										<a href="{$_url}frontend/edit/{$ds['id']}" class="btn btn-warning btn-sm">{$_L['Edit']}</a>
 										<a href="{$_url}frontend/delete/{$ds['id']}" id="{$ds['id']}" class="btn btn-danger btn-sm cdelete">{$_L['Delete']}</a>
+										<a href="{$_url}frontend/ftp/{$ds['id']}" id="{$ds['id']}" class="btn btn-warning btn-sm">{$_L['Use']}</a>
 									</td>
 								</tr>
 							{/foreach}
