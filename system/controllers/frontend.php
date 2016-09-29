@@ -173,23 +173,26 @@ switch ($action) {
 
 			//$src_file = $_SERVER["DOCUMENT_ROOT"].'/gimmikbill/template/login.html';
 			$src_file = 'template/login.html';
-			$remote_file = 'hotspot/login.html';
+			$remote_dir = '/hotspot/';
+			$remote_file = 'login.html';
 			_log( '@Is file >> '. file_exists( $src_file ) , $admin['username']);
 			// set up basic connection
-			$conn_id = ftp_connect($mikrotik['ip_address']);
+			$conn_id = ftp_connect( $mikrotik['ip_address'] );
 			_log( '@conn_id >> '. $conn_id , $admin['username']);
-			ftp_pasv ( $conn_id , true );
+			
 			// login with username and password
 			$login_result = ftp_login( $conn_id, $mikrotik['username'] , $mikrotik['password'] );
-			_log( '@login_result >> '. $login_result , $admin['username']);
+			ftp_chdir( $conn_id , $remote_dir ); 
+			ftp_pasv ( $conn_id , true );
+
+			_log( '@login_result >> '. $login_result  , $admin['username']);
 			// upload a file
-			if (ftp_put($conn_id, $remote_file, $src_file, FTP_ASCII)) {
-				ftp_close($conn_id);
+			if ( ftp_nb_put( $conn_id, $remote_file, $src_file , FTP_ASCII ) ) {
 				r2(U . 'frontend/frontend', 's', $_L['Upload_Successfully']);
 			} else {
 				r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'] );
 			}
-
+			ftp_close($conn_id);
 			// close the connection
 			
             
