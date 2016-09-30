@@ -171,32 +171,116 @@ switch ($action) {
 
 			$mikrotik = Router::_info($r['name']);
 
-			//$src_file = $_SERVER["DOCUMENT_ROOT"].'/gimmikbill/template/login.html';
 			$src_file = 'template/login.html';
+			$dest_file =  '/hotspot/login.html';
 			$remote_dir = '/hotspot/';
 			$remote_file = 'login.html';
 			_log( '@Is file >> '. file_exists( $src_file ) , $admin['username']);
+
+			//FTP version
 			// set up basic connection
-			$conn_id = ftp_connect( $mikrotik['ip_address'] );
+			
+			/*$conn_id = ftp_connect( $mikrotik['ip_address'] );
 			_log( '@conn_id >> '. $conn_id , $admin['username']);
 			
 			// login with username and password
-			$login_result = ftp_login( $conn_id, $mikrotik['username'] , $mikrotik['password'] );
-			ftp_chdir( $conn_id , $remote_dir ); 
-			ftp_pasv ( $conn_id , true );
+			if ( ftp_login( $conn_id , $mikrotik['username'] , $mikrotik['password'] ) ) {
 
-			_log( '@login_result >> '. $login_result  , $admin['username']);
-			// upload a file
-			if ( ftp_nb_put( $conn_id, $remote_file, $src_file , FTP_ASCII ) ) {
-				r2(U . 'frontend/frontend', 's', $_L['Upload_Successfully']);
-			} else {
+				ftp_chdir( $conn_id , $remote_dir );
+				ftp_pasv ( $conn_id , true );
+
+				_log( '@login_result >> '. $login_result  , $admin['username']);
+
+				// upload a file
+				if ( ftp_nb_put( $conn_id, $remote_file, $src_file , FTP_ASCII ) ) {
+					r2(U . 'frontend/frontend' , 's', $_L['Upload_Successfully']);
+				} else {
+					r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'] );
+				}
+
+			}
+			else {
+				r2(U . 'frontend/frontend' , 'e' , $_L['Unable_to_authenticate_with_server'] );
+			}
+
+			// close the connection
+			ftp_close($conn_id);
+			*/
+
+
+			//SFTP version
+			/*
+			set_include_path( get_include_path() . PATH_SEPARATOR . 'phpseclib1.0.3' );
+
+  			include('Net/SFTP.php');
+
+			try{
+				$local_directory = $src_file;
+				$remote_directory = $dest_file;
+
+				// Add the correct FTP credentials below 
+				_log( '@00000 >> ' , $admin['username']);
+				$sftp = new Net_SFTP( $mikrotik['ip_address']  );
+				_log( '@sftp >> '. $sftp  , $admin['username']);
+				if ( !$sftp->login( $mikrotik['username'] , $mikrotik['password'] ) ) 
+				{
+					r2(U . 'frontend/frontend' , 'e' , $_L['Unable_to_authenticate_with_server'] );
+				} 
+				_log( '@1111 >> ' , $admin['username']);
+				if ( $sftp->put($remote_directory , 
+									$local_directory , 
+									NET_SFTP_LOCAL_FILE) ) {
+					_log( '@2222 >> ' , $admin['username']);
+					r2(U . 'frontend/frontend' , 's', $_L['Upload_Successfully']);
+				}
+				else {
+					r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'] );
+				}
+			}
+			catch(Exception $ex)
+			{
+				r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'].' - '.$ex->getMessage() );
+			}
+			*/
+
+			/*
+			try{
+				_log( '@00000 >> '.$mikrotik['ip_address'] , $admin['username']);
+				$connection = ssh2_connect( $mikrotik['ip_address'] , '22' );
+				
+				_log( '@111 connection >> '.$connection , $admin['username']);
+				if (ssh2_auth_password( $connection , $mikrotik['username'] , $mikrotik['password'] )) {
+					// initialize sftp
+					$sftp = ssh2_sftp($connection);
+					_log( '@222 sftp >> '.$sftp , $admin['username']);
+					$contents = file_get_contents($src_file);
+					_log( '@333 contents >> '.$contents , $admin['username']);
+					file_put_contents("ssh2.sftp://{$sftp}/{$src_file}", $contents);
+					r2(U . 'frontend/frontend' , 's', $_L['Upload_Successfully']);
+				} else {
+					r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'] );
+				}
+				_log( '@44444 >> ' , $admin['username']);
+				
 				r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'] );
 			}
-			ftp_close($conn_id);
-			// close the connection
-			
-            
-            
+			catch(Exception $ex) {
+				r2(U . 'frontend/frontend' , 'e', $_L['Upload_Failed'].' - '.$ex->getMessage() );
+			}
+			*/
+
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename='.basename($src_file));
+			header('Content-Transfer-Encoding: binary');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($src_file));
+			ob_clean();
+			flush();
+			readfile($src_file);
+			//exit;
         }
         break;
 
